@@ -23,4 +23,7 @@ class Product extends Model
                            'inventory',
                            'published',
                            'price'];
+
+
+    //wagwagwag
 }
