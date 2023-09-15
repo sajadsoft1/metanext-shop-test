@@ -22,16 +22,9 @@ class ProductController extends BaseApiController
      */
     public function store(ProductRequest $request)
     {
-
-        $product = Product::create([
-            'user_id'     => auth()->id(),
-            'category_id' => $request->input('category_id'),
-            'brand_id'    => $request->input('brand_id'),
-            'title'       => $request->input('title'),
-            'body'        => $request->input('body'),
-            'inventory'   => $request->input('inventory', 0),
-            'price'       => $request->input('price'),
-        ]);
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+        $product = Product::create($data);
 
         return $this->successResponse(
             $product,
@@ -44,29 +37,15 @@ class ProductController extends BaseApiController
      */
     public function show(Product $product)
     {
-        //
+        return $this->successResponse($product);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $data = $request->validate([
-            'category_id' => 'integer|required',
-            'brand_id'    => 'integer|required',
-            'title'       => 'required|string',
-            'body'        => 'required|string',
-            'price'       => 'required|numeric',
-        ]);
-
-        $data['user_id'] = auth()->id();
-        if (empty($data['inventory'])) {
-            return $this->errorResponse('product inventory can not empty');
-        }
-        $data['inventory'] = $request->input('inventory', 0);
-        $product->update($data);
-
+        $product->update($request->validated());
         return $this->successResponse(
             $product,
             "product update success"

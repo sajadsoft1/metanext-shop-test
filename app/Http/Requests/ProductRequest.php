@@ -20,6 +20,7 @@ class ProductRequest extends FormRequest
             'title'       => 'required|string',
             'body'        => 'required|string',
             'price'       => 'required|numeric',
+            'inventory'   => 'int',
         ];
     }
 }
