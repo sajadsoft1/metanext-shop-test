@@ -14,6 +14,7 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        //aaaa
         return [
             'category_id' => 'integer|required',
             'brand_id'    => 'integer|required',
