@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends BaseApiController
 {
@@ -15,7 +17,11 @@ class ProductController extends BaseApiController
     //salam dostan
     public function index()
     {
-        return Product::orderByDesc('id')->get();
+        $data = DB::table('products')->with(['user'])->orderByDesc('id')->get();
+
+        return $this->successResponse(
+            ProductResource::collection($data)
+        );
     }
 
     /**
@@ -28,7 +34,7 @@ class ProductController extends BaseApiController
         $product = Product::create($data);
 
         return $this->successResponse(
-            $product,
+            ProductResource::make($product),
             "product store success",
             201);
     }
@@ -38,7 +44,8 @@ class ProductController extends BaseApiController
      */
     public function show(Product $product)
     {
-        return $this->successResponse($product);
+        $product->load(['user','brand']);
+        return $this->successResponse(ProductResource::make($product));
     }
 
     /**
@@ -48,7 +55,7 @@ class ProductController extends BaseApiController
     {
         $product->update($request->validated());
         return $this->successResponse(
-            $product,
+            ProductResource::make($product),
             "product update success"
         );
     }
