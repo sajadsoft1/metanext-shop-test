@@ -12,6 +12,7 @@ class ProductController extends BaseApiController
     /**
      * Display a listing of the resource.
      */
+    //salam dostan
     public function index()
     {
         return Product::orderByDesc('id')->get();
