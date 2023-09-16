@@ -2,26 +2,31 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends BaseApiController
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return User::orderByDesc('id')->with('blogs')->get();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $user = User::create($request->validated());
+        return $this->successResponse(UserResource::make($user),
+            'کاربر مورد نظر ثبت شد',
+            '201');
+
     }
 
     /**
@@ -47,4 +52,6 @@ class UserController extends Controller
     {
         //
     }
+
+
 }
