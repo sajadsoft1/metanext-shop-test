@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BrandResource extends JsonResource
 {
+    private mixed $products;
+
     /**
      * Transform the resource into an array.
      *
@@ -17,7 +19,8 @@ class BrandResource extends JsonResource
         return [
             'id'    => $this->id,
             'uuid'  => $this->uuid,
-            'title' => $this->title
+            'title' => $this->title,
+            'products'     => ProductResource::make($this->products),
         ];
     }
 }
