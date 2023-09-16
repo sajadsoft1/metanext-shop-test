@@ -38,7 +38,6 @@ class UserController extends BaseApiController
         $user->load(['blogs','products','medias','likes']);
         return $this->successResponse(UserResource::make($user));
     }
-////////
     /**
      * Update the specified resource in storage.
      */

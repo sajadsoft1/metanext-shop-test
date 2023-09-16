@@ -4,19 +4,29 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\HasComment;
+use App\Traits\HasLike;
 use App\Traits\HasMedia;
 use App\Traits\HasUuid;
+use App\Traits\HasView;
 use Illuminate\Cache\HasCacheLock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuid, HasMedia, HasComment ;
+    use HasApiTokens,
+        HasFactory,
+        SoftDeletes,
+        Notifiable,
+        HasUuid,
+        HasMedia,
+        HasView,
+        HasComment;
 
     /**
      * The attributes that are mass assignable.
@@ -76,11 +86,10 @@ class User extends Authenticatable
         return $this->hasMany(Product::class);
     }
 
-    public function likes():MorphMany
+    public function likes(): HasMany
     {
-        return $this->morphMany(Like::class,'likeable');
+        return $this->hasMany(Like::class);
     }
-
 
 
 }
