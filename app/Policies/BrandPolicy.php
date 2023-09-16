@@ -11,6 +11,5 @@ class BrandPolicy
      */
     public function __construct()
     {
-        //dfddgdfgdgdvsdfgderwtetr
     }
 }
