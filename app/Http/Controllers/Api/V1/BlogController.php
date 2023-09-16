@@ -14,13 +14,12 @@ class BlogController extends BaseApiController
     /**
      * Display a listing of the resource.
      */
-    public function index(BlogRequest $request)
+    public function index(Request $request)
     {
-           $data = Blog::with(['comments' , 'medias' , 'likes' ,'views' ])->get();
-
-//        $blogs = Blog::with('translations')->get();
-
-        return $this->successResponse(BlogResource::collection($data));
+        $data = Blog::with(['category', 'user'])->get();
+        return $this->successResponse(
+            BlogResource::collection($data)
+        );
     }
 
     /**
@@ -30,35 +29,13 @@ class BlogController extends BaseApiController
     {
         $data = $request->validated();
         $data['user_id'] = auth()->id();
-
         $blog = Blog::create($data);
 
-
-
-//        $blog = Blog::create([
-//            'published'   => 1,
-//            'category_id' => 1,
-//            'user_id'     => 1,
-//        ]);
-
-//        $blog->translations()->create(
-//            [
-//                'key'    => 'title',
-//                'locale' => 'fa',
-//                'value'  => 'بلاگ 4',
-//            ],
-//        );
-
-//        $blog->translations()->create(
-//            [
-//                'key'    => 'title',
-//                'locale' => 'en',
-//                'value'  => 'blog 3',
-//            ],);
-
-//        return $blog->load('translations');
-
-        return $this->successResponse(BlogResource::make($blog));
+        return $this->successResponse(
+            BlogResource::make(
+                $blog->load(['category', 'user'])),
+            "blog store success",
+            201);
     }
 
     /**
@@ -66,7 +43,7 @@ class BlogController extends BaseApiController
      */
     public function show(Blog $blog)
     {
-        $blog->load('category' , 'likes' , 'comments' , 'views');
+        $blog->load('category', 'likes', 'comments', 'medias', 'views', 'user');
         return $this->successResponse(BlogResource::make($blog));
     }
 
@@ -75,9 +52,11 @@ class BlogController extends BaseApiController
      */
     public function update(BlogRequest $request, Blog $blog)
     {
-       $blog->update($request->validated());
+        $blog->update($request->validated());
 
-       return $this->successResponse(BlogResource::make($blog), "The blog has been successfully updated");
+        return $this->successResponse(BlogResource::make(
+            $blog->load(['category', 'user'])),
+            "The blog has been successfully updated");
     }
 
     /**
@@ -85,8 +64,19 @@ class BlogController extends BaseApiController
      */
     public function destroy(Blog $blog)
     {
-        $data=$blog->delete();
-        return $this->successResponse('' , 'The blog has been successfully deleted' , 200);
+        return $this->successResponse($blog->delete(), 'The blog has been successfully deleted');
+    }
+
+
+    public function toggle(Blog $blog)
+    {
+        $blog->published = !$blog->published;
+        $blog->save();
+
+        return $this->successResponse(
+            BlogResource::make($blog->load(['user', 'category'])),
+            "Message status updated successfully"
+        );
 
 
     }

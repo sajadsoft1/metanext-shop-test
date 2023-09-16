@@ -16,10 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//auth()->login(\App\Models\User::first());
+auth()->login(\App\Models\User::first());
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::apiResource('blog', BlogController::class);
 Route::apiResource('product', ProductController::class);
+
+
+Route::get('blog/toggle/{blog}', [BlogController::class, 'toggle']);

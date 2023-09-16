@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
+            $table->uuid()->unique()->index();
             $table->boolean("published")->default(false);
             $table->foreignId("category_id")->nullable()->constrained()->nullOnDelete();
             $table->foreignId("user_id")->nullable()->constrained()->nullOnDelete();
