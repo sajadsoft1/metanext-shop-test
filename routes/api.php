@@ -30,3 +30,4 @@ Route::apiResource('brand', BrandController::class);
 
 
 Route::get('blog/toggle/{blog}', [BlogController::class, 'toggle']);
+Route::apiResource('user',\App\Http\Controllers\Api\V1\UserController::class);
