@@ -11,7 +11,7 @@ class BaseApiController extends BaseController
     use AuthorizesRequests, ValidatesRequests;
 
 
-    public function successResponse($data,$message="",$status=200)
+    public function successResponse( $data=null,$message="",$status=200)
     {
         return response()->json(compact('data','message'),$status);
     }

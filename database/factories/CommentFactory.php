@@ -24,6 +24,8 @@ class CommentFactory extends Factory
             'user_id'=> User::factory(),
             'parent_id'=> null,
             'published'=> rand(0,1),
+            'commentable_type' => '',
+            'commentable_id' => 1,
         ];
     }
 }

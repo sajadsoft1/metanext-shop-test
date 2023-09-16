@@ -17,7 +17,11 @@ class MediaFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'url' => fake()->url,
+            'extension' => fake()->randomElement(['pdf' , 'jpg']),
+            'size' => rand(1,3),
+            'mediable_type' => '',
+            'mediable_id' => 1,
         ];
     }
 }

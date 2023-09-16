@@ -19,6 +19,8 @@ class LikeFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'likeable_type' => '',
+            'likeable_id' => 1,
         ];
     }
 }

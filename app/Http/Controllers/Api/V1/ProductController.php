@@ -17,6 +17,7 @@ class ProductController extends BaseApiController
     //salam dostan
     public function index()
     {
+
         $data = DB::table('products')->with(['user'])->orderByDesc('id')->get();
 
         return $this->successResponse(

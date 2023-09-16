@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-auth()->login(\App\Models\User::first());
+//auth()->login(\App\Models\User::first());
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
