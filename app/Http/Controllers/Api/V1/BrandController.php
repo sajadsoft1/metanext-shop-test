@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandRequest;
 use App\Http\Resources\BrandResource;
-use App\Http\Resources\ProductResource;
 use App\Models\Brand;
-use App\Models\Product;
-use Illuminate\Http\Request;
 
 class BrandController extends BaseApiController
 {
@@ -17,7 +13,8 @@ class BrandController extends BaseApiController
      */
     public function index()
     {
-        $data=Brand::orderBy('id','desc')->get();
+        $data = Brand::orderByDesc('id')->get();
+
         return $this->successResponse(
             BrandResource::collection($data),
             'نمایش برندها');
@@ -28,8 +25,7 @@ class BrandController extends BaseApiController
      */
     public function store(BrandRequest $request)
     {
-        $data=$request->validated();
-        $brand = Brand::create($data);
+        $brand = Brand::create($request->validated());
 
         return $this->successResponse(
             BrandResource::make($brand),
@@ -53,6 +49,7 @@ class BrandController extends BaseApiController
     public function update(BrandRequest $request, Brand $brand)
     {
         $brand->update($request->validated());
+
         return $this->successResponse(
             BrandResource::make($brand),
             "آبدیت با موفقیت انجام شد");

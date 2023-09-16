@@ -14,7 +14,7 @@ class BlogController extends BaseApiController
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $data = Blog::with(['category', 'user'])->get();
         return $this->successResponse(

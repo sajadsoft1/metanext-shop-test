@@ -7,7 +7,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class BrandResource extends JsonResource
 {
-    private mixed $products;
 
     /**
      * Transform the resource into an array.
@@ -17,10 +16,10 @@ class BrandResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'    => $this->id,
-            'uuid'  => $this->uuid,
-            'title' => $this->title,
-            'products'     => ProductResource::make($this->products),
+            'id'       => $this->id,
+            'uuid'     => $this->uuid,
+            'title'    => $this->title,
+            'products' => $this->whenLoaded('products',fn()=>ProductResource::collection($this->products)),
         ];
     }
 }

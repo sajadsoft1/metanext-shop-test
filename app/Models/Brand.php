@@ -6,24 +6,17 @@ use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Brand extends Model
 {
-    use HasFactory,HasUuid;
+    use HasFactory, HasUuid,SoftDeletes;
 
     protected $fillable =
         [
-        'uuid',
-        'title',
-    ];
-
-    public static function orderByDesc(string $string)
-    {
-    }
-
-    public static function create(mixed $data)
-    {
-    }
+            'uuid',
+            'title',
+        ];
 
     public function products(): HasMany
     {
