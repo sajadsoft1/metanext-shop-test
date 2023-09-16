@@ -4,16 +4,19 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\HasComment;
+use App\Traits\HasMedia;
 use App\Traits\HasUuid;
+use Illuminate\Cache\HasCacheLock;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,HasUuid,HasComment;
+    use HasApiTokens, HasFactory, Notifiable, HasUuid, HasMedia, HasComment ;
 
     /**
      * The attributes that are mass assignable.
@@ -21,10 +24,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'uuid',
         'name',
-        'email', 'uuid', 'family', 'email_verified_at', 'block', 'remember_token',
-        'role',
+        'family',
+        'email',
+        'email_verified_at',
         'password',
+        'block',
+        'role',
+        'remember_token',
     ];
 
     /**
@@ -48,9 +56,31 @@ class User extends Authenticatable
     ];
 
 
-    public function blogs() : HasMany
+    public function blogs(): HasMany
     {
         return $this->hasMany(Blog::class);
     }
+
+    public function cart(): HasMany
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
+    public function likes():MorphMany
+    {
+        return $this->morphMany(Like::class,'likeable');
+    }
+
+
 
 }

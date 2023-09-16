@@ -14,7 +14,8 @@ class UserController extends BaseApiController
      */
     public function index()
     {
-        return User::orderByDesc('id')->with('blogs')->get();
+        $users = User::orderByDesc('id')->with(['medias'])->get();
+        return $this->successResponse(UserResource::collection($users));
     }
 
     /**
@@ -23,7 +24,7 @@ class UserController extends BaseApiController
     public function store(UserRequest $request)
     {
         $user = User::create($request->validated());
-        return $this->successResponse(UserResource::make($user),
+        return $this->successResponse(UserResource::make($user->load(['medias'])),
             'کاربر مورد نظر ثبت شد',
             '201');
 
@@ -34,7 +35,8 @@ class UserController extends BaseApiController
      */
     public function show(User $user)
     {
-        //
+        $user->load(['blogs','products','medias','likes']);
+        return $this->successResponse(UserResource::make($user));
     }
 
     /**
